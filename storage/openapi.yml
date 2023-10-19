@@ -1,0 +1,118 @@
+openapi: 3.0.0
+info:
+  title: Library API
+  description: This API manages borrow and return records for a Library
+  contact:
+    email: hli197@my.bcit.ca
+  version: 1.0.0
+
+paths:
+  /records/borrow:
+    get:
+      tags:
+        - records
+      summary: Get borrow records created on or after the specified timestamp
+      operationId: app.get_borrow_records_by_timestamp
+      parameters:
+        - name: timestamp
+          in: query
+          description: Limits the number of items on page
+          schema:
+            type: string
+            format: date-time
+            example: "2023-10-08T13:57:01Z"
+      responses:
+        "200":
+          description: Successfully returned borrow records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BorrowRecord"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /records/return:
+    get:
+      tags:
+        - records
+      summary: Get return records created on or after the specified timestamp
+      operationId: app.get_return_records_by_timestamp
+      parameters:
+        - name: timestamp
+          in: query
+          description: Limits the number of items on page
+          schema:
+            type: string
+            format: date-time
+            example: "2023-10-08T13:57:01Z"
+      responses:
+        "200":
+          description: Successfully returned a list of return records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ReturnRecord"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+components:
+  schemas:
+    BorrowRecord:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        book_id:
+          type: string
+        borrow_date:
+          type: string
+          format: date-time
+        borrower_name:
+          type: string
+        borrow_duration:
+          type: integer
+        late_fee:
+          type: number
+        trace_id:
+          type: string
+          format: uuid
+
+    ReturnRecord:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        book_id:
+          type: string
+        return_date:
+          type: string
+          format: date-time
+        late_fee:
+          type: number
+        returner_name:
+          type: string
+        return_duration:
+          type: integer
+        trace_id:
+          type: string
+          format: uuid

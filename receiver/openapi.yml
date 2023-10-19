@@ -1,0 +1,90 @@
+openapi: 3.0.0
+info:
+  title: Library API
+  description: This API manages borrow and return records for a Library
+  contact:
+    email: hli197@my.bcit.ca
+  version: 1.0.0
+
+tags:
+  - name: records
+    description: Operations related to borrow and return records
+
+paths:
+  /records/borrow:
+    post:
+      tags:
+        - records
+      summary: borrow a book
+      description: Adds an record when user borrow a book from the Library
+      operationId: app.borrow_book
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BorrowRecord"
+      responses:
+        "201":
+          description: borrrow record created
+        "400":
+          description: "invalid input, object invalid"
+        "409":
+          description: an existing record already exists
+  /records/return:
+    post:
+      tags:
+        - records
+      summary: Return a book
+      operationId: app.return_book
+      description: Records when a user returns a borrowed book to the bookstore
+      responses:
+        "201":
+          description: Book returned successfully
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReturnRecord"
+components:
+  schemas:
+    BorrowRecord:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        book_id:
+          type: string
+        borrow_date:
+          type: string
+          format: date-time
+        borrower_name:
+          type: string
+        borrow_duration:
+          type: integer
+        late_fee:
+          type: number
+        trace_id:
+          type: string
+          format: uuid
+
+    ReturnRecord:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        book_id:
+          type: string
+        return_date:
+          type: string
+          format: date-time
+        late_fee:
+          type: number
+        returner_name:
+          type: string
+        return_duration:
+          type: integer
+        trace_id:
+          type: string
+          format: uuid

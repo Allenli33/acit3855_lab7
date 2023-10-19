@@ -1,0 +1,137 @@
+openapi: 3.0.0
+info:
+  title: Library API
+  description: This API provides audit info
+  contact:
+    email: hli197@my.bcit.ca
+  version: 1.0.0
+
+tags:
+  - name: records
+    description: Operations related to borrow and return records
+
+paths:
+  /records/borrow:
+    get:
+      tags:
+        - records
+      summary: gets a borrow record from history
+      operationId: app.get_borrow_record_index
+      parameters:
+        - name: index
+          in: query
+          description: Gets the Borrow Record at the index in the event store
+          required: true
+          schema:
+            type: integer
+            example: 100
+      responses:
+        "200":
+          description: Successfully returned a borrow record event
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/BorrowRecord"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /records/return:
+    get:
+      tags:
+        - records
+      summary: gets a return record from history
+      operationId: app.get_return_record_index
+      parameters:
+        - name: index
+          in: query
+          description: Gets the Return Record at the index in the event store
+          schema:
+            type: integer
+            example: 100
+      responses:
+        "200":
+          description: Successfully returned a return record
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/ReturnRecord"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+components:
+  schemas:
+    BorrowRecord:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        book_id:
+          type: string
+        borrow_date:
+          type: string
+          format: date-time
+        borrower_name:
+          type: string
+        borrow_duration:
+          type: integer
+        late_fee:
+          type: number
+        trace_id:
+          type: string
+          format: uuid
+
+    ReturnRecord:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        book_id:
+          type: string
+        return_date:
+          type: string
+          format: date-time
+        late_fee:
+          type: number
+        returner_name:
+          type: string
+        return_duration:
+          type: integer
+        trace_id:
+          type: string
+          format: uuid
