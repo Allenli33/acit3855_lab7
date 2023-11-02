@@ -5,6 +5,8 @@ from connexion import NoContent
 from pykafka import KafkaClient
 import json
 import yaml
+from flask_cors import CORS, cross_origin
+
 
 # load the app config file
 with open('app_conf.yml', 'r') as f:
@@ -116,6 +118,8 @@ def get_return_record_index(index):
 
 app = connexion.FlaskApp(__name__, specification_dir='')
 app.add_api("openapi.yml", strict_validation=True, validate_responses=True)
+CORS(app.app)
+app.app.config['CORS_HEADERS'] = 'Content-Type'
 
 if __name__ == "__main__":
     app.run(port=8110)
