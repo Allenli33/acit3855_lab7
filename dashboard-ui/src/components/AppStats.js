@@ -43,7 +43,7 @@ export default function AppStats() {
                             <td># Returned Books: {stats['num_rb_received']}</td>
                         </tr>
                         <tr>
-                            <td colspan="2">Avg of Borrow Book duration: {stats['avg_borrow_duration"']}</td>
+                            <td colspan="2">Avg of Borrow Book duration: {stats['avg_borrow_duration']}</td>
                         </tr>
                         <tr>
                             <td colspan="2">Avg of Return Book duration: {stats['avg_return_duration']}</td>
