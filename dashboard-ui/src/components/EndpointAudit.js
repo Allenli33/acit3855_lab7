@@ -7,6 +7,7 @@ export default function EndpointAudit(props) {
     const [error, setError] = useState(null)
     const rand_val = Math.floor(Math.random() * 100); // Get a random event from the event store
     const [index, setIndex] = useState(null);
+    setIndex(rand_val);
 
     const getAudit = () => {
         fetch(`http://allenliacit3855.eastus.cloudapp.azure.com:8110/${props.endpoint}?index=${rand_val}`)
