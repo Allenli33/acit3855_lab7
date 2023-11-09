@@ -22,6 +22,14 @@ paths:
             format: date-time
             example: "2023-10-08T13:57:01Z"
 
+        - name: end_timestamp
+          in: query
+          description: End of the date range for return records
+          schema:
+            type: string
+            format: date-time
+            example: "2023-11-09T11:15:01Z"
+
       responses:
         "200":
           description: Successfully returned borrow records
@@ -55,6 +63,15 @@ paths:
             type: string
             format: date-time
             example: "2023-10-08T13:57:01Z"
+
+        - name: end_timestamp
+          in: query
+          description: End of the date range for return records
+          schema:
+            type: string
+            format: date-time
+            example: "2023-11-09T11:15:01Z"
+
       responses:
         "200":
           description: Successfully returned a list of return records
