@@ -50,12 +50,13 @@ def populate_stats():
 
     # Fetch new events
 
-    #timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+    current_timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+    last_updated = current_stats['last_updated']
 
     borrow_events_response = requests.get(
-        f"{app_config['eventstore']['url']}/records/borrow?timestamp={current_stats['last_updated']}")
+        f"{app_config['eventstore']['url']}/records/borrow?timestamp={last_updated}&end_timestamp={current_timestamp}")
     return_events_response = requests.get(
-        f"{app_config['eventstore']['url']}/records/return?timestamp={current_stats['last_updated']}")
+        f"{app_config['eventstore']['url']}/records/return?timestamp={last_updated}&end_timestamp={current_timestamp}")
 
     if borrow_events_response.status_code != 200:
         logger.error(
@@ -92,8 +93,7 @@ def populate_stats():
         current_stats['max_return_late_fee'] = max(
             event['late_fee'] for event in return_events)
 
-    current_stats["last_updated"] = datetime.datetime.now().strftime(
-        "%Y-%m-%dT%H:%M:%SZ")
+    current_stats["last_updated"] = current_timestamp
 
     # Save updated stats
     with open(filename, 'w') as f:
