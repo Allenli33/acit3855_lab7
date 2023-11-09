@@ -21,6 +21,7 @@ paths:
             type: string
             format: date-time
             example: "2023-10-08T13:57:01Z"
+
       responses:
         "200":
           description: Successfully returned borrow records

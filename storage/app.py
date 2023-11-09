@@ -14,6 +14,7 @@ import json
 from pykafka import KafkaClient
 from pykafka.common import OffsetType
 from threading import Thread
+from sqlalchemy import and_
 
 # load the app config file
 with open('app_conf.yml', 'r') as f:
@@ -165,7 +166,7 @@ def return_book(body):
 '''
 
 
-def get_borrow_records_by_timestamp(timestamp):
+def get_borrow_records_by_timestamp(timestamp, end_timestamp):
     """ Gets borrow records created on or after the given timestamp """
     session = DB_SESSION()
 
@@ -174,9 +175,11 @@ def get_borrow_records_by_timestamp(timestamp):
             timestamp, "%Y-%m-%dT%H:%M:%SZ")
     except ValueError:
         return {"message": "Invalid timestamp format. Please use the format 'YYYY-MM-DDTHH:MM:SSZ'"}, 400
+    
+    end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%SZ")
 
     borrow_records = session.query(BorrowRecord).filter(
-        BorrowRecord.date_created >= timestamp_datetime).all()
+        and_(BorrowRecord.date_created >= timestamp_datetime, BorrowRecord.date_created < end_timestamp_datetime))
 
     results_list = []
 
@@ -191,7 +194,7 @@ def get_borrow_records_by_timestamp(timestamp):
     return results_list, 200
 
 
-def get_return_records_by_timestamp(timestamp):
+def get_return_records_by_timestamp(timestamp, end_timestamp):
     """ Gets return records created on or after the given timestamp """
     session = DB_SESSION()
 
@@ -200,9 +203,11 @@ def get_return_records_by_timestamp(timestamp):
             timestamp, "%Y-%m-%dT%H:%M:%SZ")
     except ValueError:
         return {"message": "Invalid timestamp format. Please use the format 'YYYY-MM-DDTHH:MM:SSZ'"}, 400
-
+    
+    end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    
     return_records = session.query(ReturnRecord).filter(
-        ReturnRecord.date_created >= timestamp_datetime).all()
+        and_(ReturnRecord.date_created >= timestamp_datetime, ReturnRecord.date_created < end_timestamp_datetime))
 
     results_list = []
 
