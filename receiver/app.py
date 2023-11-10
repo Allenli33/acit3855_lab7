@@ -8,6 +8,7 @@ import uuid
 import datetime
 import json
 from pykafka import KafkaClient
+import time
 
 # load the app config file
 with open('app_conf.yml', 'r') as f:
@@ -22,13 +23,28 @@ with open('log_conf.yml', 'r') as f:
 # and logging.config modules.
 logger = logging.getLogger('basicLogger')
 
+# Initialize KafkaClient at startup
+def get_kafka_client():
+    retry_count = 0
+    max_retries = app_config['kafka']['max_retries']
+    sleep_time = app_config['kafka']['sleep_time']
 
+    while retry_count < max_retries:
+        try:
+            logger.info(f"Trying to connect to Kafka, attempt {retry_count+1}")
+            client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
+            return client
+        except Exception as e:
+            logger.error(f"Connection to Kafka failed: {str(e)}")
+            time.sleep(sleep_time)
+            retry_count += 1
+    raise Exception("Failed to connect to Kafka after retries")
+
+kafka_client = get_kafka_client()
+kafka_topic = kafka_client.topics[str.encode(app_config['events']['topic'])]
+producer = kafka_topic.get_sync_producer()
+    
 def send_to_kafka(event_type, payload):
-    client = KafkaClient(
-        hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
-    topic = client.topics[str.encode(app_config['events']['topic'])]
-    producer = topic.get_sync_producer()
-
     msg = {
         "type": event_type,
         "datetime": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
