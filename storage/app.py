@@ -15,6 +15,7 @@ from pykafka import KafkaClient
 from pykafka.common import OffsetType
 from threading import Thread
 from sqlalchemy import and_
+import time
 
 # load the app config file
 with open('app_conf.yml', 'r') as f:
@@ -47,19 +48,31 @@ logger.info(f"Connecting to DB. Hostname:{db_hostname}, Port:{db_port}.")
 
 def process_messages():
     """Process event messages."""
-    hostname = "%s:%d" % (
-        app_config["events"]["hostname"], app_config["events"]["port"])
-    client = KafkaClient(hosts=hostname)
-    topic = client.topics[str.encode(app_config["events"]["topic"])]
+    max_retries = app_config['kafka']['max_retries']
+    retry_delay_sec = app_config['kafka']['retry_delay_sec']
+    retry_count = 0
+    while retry_count < max_retries:
+        try:
+            logger.info(f"Trying to connect to Kafka, attempt {retry_count+1}")
+            hostname = f"{app_config['events']['hostname']}:{app_config['events']['port']}"
+            client = KafkaClient(hosts=hostname)
+            topic = client.topics[str.encode(app_config["events"]["topic"])]
+            consumer = topic.get_simple_consumer(
+                consumer_group=b'event_group',
+                reset_offset_on_start=False,
+                auto_offset_reset=OffsetType.LATEST
+            )
+            logger.info("Successfully connected to Kafka")
+            break
+        except Exception as e:
+            logger.error(f"Connection to Kafka failed on attempt {retry_count+1}: {e}")
+            retry_count += 1
+            if retry_count < max_retries:
+                time.sleep(retry_delay_sec)
+            else:
+                logger.error("Maximum retry attempts reached, could not connect to Kafka")
+                return  # Exit the function if connection fails after max retries
 
-    # Create a consumer on a consumer group, that only reads new messages
-    # (uncommitted messages) when the service restarts (i.e., it doesn't
-    # read all the old messages from the history in the message queue).
-    consumer = topic.get_simple_consumer(
-        consumer_group=b'event_group',
-        reset_offset_on_start=False,
-        auto_offset_reset=OffsetType.LATEST
-    )
 
     # This is blocking - it will wait for a new message
     for msg in consumer:
