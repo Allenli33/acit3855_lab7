@@ -9,7 +9,7 @@ export default function EndpointAudit(props) {
 
     useEffect(() => {
         // Set index when component mounts
-        setIndex(Math.floor(Math.random() * 100));
+        setIndex(rand_val);
     }, []);
 
     const getAudit = useCallback(() => {
