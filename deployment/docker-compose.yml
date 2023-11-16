@@ -6,7 +6,7 @@ services:
     ports:
       - "2181"
     hostname: zookeeper
-    valumes:
+    volumes:
       - /home/azureuser/zookeeper/data:/opt/zookeeper-3.4.13/data
 
   kafka:
