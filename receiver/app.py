@@ -33,16 +33,18 @@ def get_kafka_client():
         try:
             logger.info(f"Trying to connect to Kafka, attempt {retry_count+1}")
             client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
-            return client
+            kafka_topic = client.topics[str.encode(app_config['events']['topic'])]
+            producer = kafka_topic.get_sync_producer()
+            logger.info("Connected to Kafka successfully")
+            return client, producer
+            
         except Exception as e:
             logger.error(f"Connection to Kafka failed: {str(e)}")
             time.sleep(sleep_time)
             retry_count += 1
     raise Exception("Failed to connect to Kafka after retries")
 
-kafka_client = get_kafka_client()
-kafka_topic = kafka_client.topics[str.encode(app_config['events']['topic'])]
-producer = kafka_topic.get_sync_producer()
+client, producer = get_kafka_client()
     
 def send_to_kafka(event_type, payload):
     msg = {
