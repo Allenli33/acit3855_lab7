@@ -27,7 +27,7 @@ logger = logging.getLogger('basicLogger')
 def get_kafka_client():
     retry_count = 0
     max_retries = app_config['kafka']['max_retries']
-    sleep_time = app_config['kafka']['sleep_time']
+    sleep_time = app_config['kafka']['retry_delay_sec']
 
     while retry_count < max_retries:
         try:
