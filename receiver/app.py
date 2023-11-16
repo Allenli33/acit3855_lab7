@@ -41,7 +41,7 @@ def get_kafka_client():
     raise Exception("Failed to connect to Kafka after retries")
 
 kafka_client = get_kafka_client()
-kafka_topic = kafka_client.topics[str.encode(app_config['events']['topic'])]
+kafka_topic = kafka_client.topics[str.encode(app_config['events'])]
 producer = kafka_topic.get_sync_producer()
     
 def send_to_kafka(event_type, payload):
