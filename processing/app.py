@@ -9,21 +9,31 @@ import datetime
 import os.path
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask_cors import CORS, cross_origin
+import os
 
+# Check environment and set configuration file paths
+if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
+    print("In Test Environment")
+    app_conf_file = "/config/app_conf.yml"
+    log_conf_file = "/config/log_conf.yml"
+else:
+    print("In Dev Environment")
+    app_conf_file = "app_conf.yml"
+    log_conf_file = "log_conf.yml"
 
-
-# load the app configuration into app.py
-with open('app_conf.yml', 'r') as f:
+# Load application configuration
+with open(app_conf_file, 'r') as f:
     app_config = yaml.safe_load(f.read())
 
-# load logging configuration into app.py
-with open('log_conf.yml', 'r') as f:
+# External Logging Configuration
+with open(log_conf_file, 'r') as f:
     log_config = yaml.safe_load(f.read())
     logging.config.dictConfig(log_config)
 
 # Create a logger from the basicLogger defined in the configuration file
 logger = logging.getLogger('basicLogger')
-
+logger.info("App Conf File: %s" % app_conf_file)
+logger.info("Log Conf File: %s" % log_conf_file)
 
 # Stub out a method called populate_stats() in app.py
 def populate_stats():
