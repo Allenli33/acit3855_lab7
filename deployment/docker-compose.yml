@@ -47,8 +47,7 @@ services:
     ports:
       - "80:80"
     networks:
-      api_network:
-      driver: bridge
+      - "api.network"
 
   db:
     image: mysql:5.7
