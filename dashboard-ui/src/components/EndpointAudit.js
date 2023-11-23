@@ -9,7 +9,7 @@ export default function EndpointAudit(props) {
 
     const getAudit = () => {
         const rand_val = Math.floor(Math.random() * 100); // Get a random event from the event store
-        fetch(`http://allenliacit3855.eastus.cloudapp.azure.com:8110${props.endpoint}?index=${rand_val}`)
+        fetch(`http://allenliacit3855.eastus.cloudapp.azure.com/stats${props.endpoint}?index=${rand_val}`)
             .then(res => res.json())
             .then((result) => {
                 console.log("Received Audit Results for " + props.endpoint);
