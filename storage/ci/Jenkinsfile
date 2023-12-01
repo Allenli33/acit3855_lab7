@@ -1,3 +1,3 @@
 @Library('ci_function@main') _
 
-python_test()
+python_test('storage', 'storageapp')
