@@ -8,6 +8,8 @@ import json
 import logging
 import logging.config
 import datetime
+import time
+import yaml
 import uuid
 from connexion import NoContent
 from pykafka import KafkaClient
@@ -34,13 +36,6 @@ with open(LOG_CONF_FILE, 'r', encoding='utf-8') as f:
 logger = logging.getLogger('basicLogger')
 logger.info("App Conf File: %s", APP_CONF_FILE)
 logger.info("Log Conf File: %s", LOG_CONF_FILE)
-
-# Other functions...
-
-# Main section
-if __name__ == "__main__":
-    app.run(port=8080)
-
 
 # Initialize KafkaClient at startup
 def get_kafka_client():
