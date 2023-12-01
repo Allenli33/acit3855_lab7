@@ -21,25 +21,25 @@ import os
 # Check environment and set configuration file paths
 if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
     print("In Test Environment")
-    app_conf_file = "/config/app_conf.yml"
-    log_conf_file = "/config/log_conf.yml"
+    APP_CONF_FILE = "/config/app_conf.yml"
+    LOG_CONF_FILE = "/config/log_conf.yml"
 else:
     print("In Dev Environment")
-    app_conf_file = "app_conf.yml"
-    log_conf_file = "log_conf.yml"
+    APP_CONF_FILE = "app_conf.yml"
+    LOG_CONF_FILE = "log_conf.yml"
 
 # Load application configuration
-with open(app_conf_file, 'r') as f:
+with open(APP_CONF_FILE, 'r', encoding='utf-8') as f:
     app_config = yaml.safe_load(f.read())
 
 # External Logging Configuration
-with open(log_conf_file, 'r') as f:
+with open(LOG_CONF_FILE, 'r', encoding='utf-8') as f:
     log_config = yaml.safe_load(f.read())
     logging.config.dictConfig(log_config)
 
 logger = logging.getLogger('basicLogger')
-logger.info("App Conf File: %s" % app_conf_file)
-logger.info("Log Conf File: %s" % log_conf_file)
+logger.info("App Conf File: %s", APP_CONF_FILE)
+logger.info("Log Conf File: %s", LOG_CONF_FILE)
 
 # Access specific configuration settings
 db_user = app_config['datastore']['user']
@@ -136,60 +136,6 @@ def process_messages():
         session.close()
         consumer.commit_offsets()
 
-
-'''
-def borrow_book(body):
-    """ Receives a borrow book record reading """
-    
-    session = DB_SESSION()
-
-    br = BorrowRecord(
-        user_id=body['user_id'],
-        book_id=body['book_id'],
-        borrow_date=body['borrow_date'],
-        borrower_name=body['borrower_name'],
-        borrow_duration=body['borrow_duration'],
-        late_fee=body['late_fee'],
-        trace_id=body['trace_id']
-        )
-
-    session.add(br)
-
-    session.commit()
-    session.close()
-    
-    # Log the successful storing of the received event
-    
-    log_message = f"Stored event borrow_book request with a trace id of {body['trace_id']}"
-    logger.debug(log_message)
-
-    return NoContent, 201
-
-def return_book(body):
-    """ Receives a return book record reading """
-    session = DB_SESSION()
-    logger.debug(body)
-    rr = ReturnRecord(
-        user_id=body['user_id'],
-        book_id=body['book_id'],
-        return_date=body['return_date'],
-        returner_name=body['returner_name'],
-        return_duration=body['return_duration'],
-        late_fee=body['late_fee'],
-        trace_id=body['trace_id']
-    )
-
-    session.add(rr)
-
-    session.commit()
-    session.close()
-    
-    # Log the successful storing of the received event
-    log_message = f"Stored event return_book request with a trace id of {body['trace_id']}"
-    logger.debug(log_message)
-
-    return NoContent, 201
-'''
 
 
 def get_borrow_records_by_timestamp(timestamp, end_timestamp):
