@@ -1,39 +1,46 @@
-import connexion
-from connexion import NoContent
-import requests
-import yaml
+"""
+This module defines the receiver service for the ACIT 3855 application.
+It handles events related to borrowing and returning books.
+"""
+
+import os
+import json
 import logging
 import logging.config
-import uuid
 import datetime
-import json
+import uuid
+from connexion import NoContent
 from pykafka import KafkaClient
-import time
-import os
 
 # Check environment and set configuration file paths
 if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
     print("In Test Environment")
-    app_conf_file = "/config/app_conf.yml"
-    log_conf_file = "/config/log_conf.yml"
+    APP_CONF_FILE = "/config/app_conf.yml"
+    LOG_CONF_FILE = "/config/log_conf.yml"
 else:
     print("In Dev Environment")
-    app_conf_file = "app_conf.yml"
-    log_conf_file = "log_conf.yml"
+    APP_CONF_FILE = "app_conf.yml"
+    LOG_CONF_FILE = "log_conf.yml"
 
 # Load application configuration
-with open(app_conf_file, 'r') as f:
+with open(APP_CONF_FILE, 'r', encoding='utf-8') as f:
     app_config = yaml.safe_load(f.read())
 
 # External Logging Configuration
-with open(log_conf_file, 'r') as f:
+with open(LOG_CONF_FILE, 'r', encoding='utf-8') as f:
     log_config = yaml.safe_load(f.read())
     logging.config.dictConfig(log_config)
 
-# Create a logger from the basicLogger defined in the configuration file
 logger = logging.getLogger('basicLogger')
-logger.info("App Conf File: %s" % app_conf_file)
-logger.info("Log Conf File: %s" % log_conf_file)
+logger.info("App Conf File: %s", APP_CONF_FILE)
+logger.info("Log Conf File: %s", LOG_CONF_FILE)
+
+# Other functions...
+
+# Main section
+if __name__ == "__main__":
+    app.run(port=8080)
+
 
 # Initialize KafkaClient at startup
 def get_kafka_client():
