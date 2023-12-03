@@ -123,7 +123,7 @@ services:
       - kafka
 
   dashboard:
-    image: dashboard
+    image: dashboard:latest
     ports:
       - "3000"
     networks:
