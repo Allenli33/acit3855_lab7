@@ -36,6 +36,7 @@ logger.info("Log Conf File: %s", LOG_CONF_FILE)
 # Stub out a method called populate_stats() in app.py
 def populate_stats():
     logger.info("Start Periodic Processing")
+    logger.info("Testing for 4850 assignmennt3")
 
     # Read in the current statistics from the JSON file
     filename = app_config['datastore']['filename']
