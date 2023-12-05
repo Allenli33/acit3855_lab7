@@ -141,6 +141,7 @@ def process_messages():
 def get_borrow_records_by_timestamp(timestamp, end_timestamp):
     """ Gets borrow records created on or after the given timestamp """
     session = DB_SESSION()
+    logger.info("testing for assignment3")
 
     try:
         timestamp_datetime = datetime.datetime.strptime(
