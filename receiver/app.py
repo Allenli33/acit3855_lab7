@@ -11,6 +11,8 @@ import datetime
 import time
 import yaml
 import uuid
+import requests
+import connexion
 from connexion import NoContent
 from pykafka import KafkaClient
 
