@@ -34,6 +34,10 @@ logger = logging.getLogger('basicLogger')
 logger.info("App Conf File: %s", APP_CONF_FILE)
 logger.info("Log Conf File: %s", LOG_CONF_FILE)
 # Stub out a method called populate_stats() in app.py
+
+def get_health():
+    return NoContent, 200
+
 def populate_stats():
     logger.info("Start Periodic Processing")
     logger.info("Testing for 4850 assignmennt3")
