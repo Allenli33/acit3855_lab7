@@ -67,7 +67,7 @@ def get_status(body):
     for sec in range(app_config["scheduler"]["max_tries"]):
         try:
             health_check = requests.get(app_config['receiver_url']+'/health')
-            body["receiver"] = "Up"
+            body["receiver"] = "Running"
             break
         except Exception:
             body["receiver"] = "Down"
@@ -77,7 +77,7 @@ def get_status(body):
     for sec in range(app_config["scheduler"]["max_tries"]):
         try:
             health_check = requests.get(app_config['storage_url']+'/health')
-            body["storage"] = "Up"
+            body["storage"] = "Running"
             break
         except Exception:
             body["storage"] = "Down"
@@ -87,7 +87,7 @@ def get_status(body):
     for sec in range(app_config["scheduler"]["max_tries"]):
         try:
             health_check = requests.get(app_config['processing_url']+'/health')
-            body["processing"] = "Up"
+            body["processing"] = "Running"
             break
         except Exception:
             body["processing"] = "Down"
@@ -97,7 +97,7 @@ def get_status(body):
     for sec in range(app_config["scheduler"]["max_tries"]):
         try:
             health_check = requests.get(app_config['audit_url']+'/health')
-            body["audit"] = "Up"
+            body["audit"] = "Running"
             break
         except Exception:
             body["audit"] = "Down"
@@ -130,7 +130,7 @@ def get_health():
         "storage": "Down",
         "processing": "Down",
         "audit": "Down",
-        "last_updated": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+        "last_updated": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
     }
 
     static_list = get_status(static_list)
@@ -150,7 +150,7 @@ def create_healths(body):
                       body["processing"],
                       body["audit"],
                       datetime.datetime.strptime(body["last_updated"],
-                                                 "%Y-%m-%dT%H:%M:%S"))
+                                                 "%Y-%m-%dT%H:%M:%SZ"))
     session.add(healths)
     session.commit()
     session.close()
@@ -166,7 +166,7 @@ def populate_healths():
 
     body = get_status(currentStat[0])
 
-    body['last_updated'] = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+    body['last_updated'] = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
     create_healths(body)
 
