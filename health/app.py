@@ -58,6 +58,7 @@ def create_table(sql_path):
 
 # Check service health
 def check_service_health(url):
+    ''''checks the health of a given service by making an HTTP GET request to endpoint. It returns "Running" if it gets a 200 response within 5 seconds; otherwise, it returns "Down"'''
     try:
         response = requests.get(url, timeout=5)
         return "Running" if response.status_code == 200 else "Down"
@@ -65,6 +66,7 @@ def check_service_health(url):
         return "Down"
 
 def get_status():
+    ''' checks the health status of all the services (receiver, storage, processing, audit) and returns a dictionary containing their statuses and the last updated timestamp'''
     body = {
         "receiver": check_service_health(app_config['receiver_url'] + '/health'),
         "storage": check_service_health(app_config['storage_url'] + '/health'),
@@ -89,7 +91,7 @@ def get_health():
         return get_status(), 404
 
 def create_healths(body):
-    '''Write a new Healths object to the database'''
+    '''Writes a new health check record to the database. It constructs a Healths object from the provided status data and saves it to the database.'''
     session = DB_SESSION()
     healths = Healths(body["receiver"], body["storage"], body["processing"], body["audit"], datetime.datetime.strptime(body["last_updated"], "%Y-%m-%dT%H:%M:%SZ"))
     session.add(healths)
@@ -98,7 +100,7 @@ def create_healths(body):
     return NoContent, 201
 
 def populate_healths():
-    '''Periodically update healths'''
+    '''called periodically by the scheduler. It obtains the current status of each service using get_status and stores this information in the database using create_healths.'''
     logger.info("Start Health Check")
     body = get_status()
     create_healths(body)
@@ -117,7 +119,7 @@ app.add_api("openapi.yml", base_path="/health", strict_validation=True, validate
 
 @app.route('/health', methods=['GET'])
 def get_health_status():
-    '''API endpoint for getting health status of all services'''
+    '''calls get_health to retrieve the latest health statuses and returns them in JSON format.'''
     status, code = get_health()
     logger.info("Health status retrieved")
     return json.dumps(status), code
