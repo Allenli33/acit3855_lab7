@@ -70,7 +70,9 @@ def send_to_kafka(event_type, payload):
     }
     msg_str = json.dumps(msg)
     producer.produce(msg_str.encode('utf-8'))
-
+    
+def get_health():
+    return NoContent, 200
 
 # Function to handle borrowing a book
 def borrow_book(body):
