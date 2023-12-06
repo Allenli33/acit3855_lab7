@@ -95,6 +95,9 @@ def get_event_by_index(event_type, index):
     logger.error("Could not find {} at index {}".format(event_type, index))
     return {"message": "Not Found"}, 404
 
+def get_health():
+    return NoContent, 200
+
 
 def get_borrow_record_index(index):
     """
