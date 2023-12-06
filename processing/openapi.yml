@@ -30,6 +30,18 @@ paths:
                 properties:
                   message:
                     type: string
+  /health:
+    get:
+      tags:
+        - admins
+      summary: Gets the event health
+      operationId: app.get_health
+      description: Gets status of service is running or offline
+      responses:
+        "200":
+          description: backend service is running
+        "400":
+          description: backend service is down
 
 tags:
   - name: statistics
