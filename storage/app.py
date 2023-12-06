@@ -58,6 +58,9 @@ DB_SESSION = sessionmaker(bind=DB_ENGINE)
 #port= 3306
 logger.info(f"Connecting to DB. Hostname:{db_hostname}, Port:{db_port}.")
 
+def get_health():
+    return NoContent, 200
+
 
 def process_messages():
     """Process event messages."""
