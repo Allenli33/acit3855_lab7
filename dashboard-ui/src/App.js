@@ -3,7 +3,7 @@ import './App.css';
 
 import EndpointAudit from './components/EndpointAudit'
 import AppStats from './components/AppStats'
-import AppHealths from './components/AppHealth';
+import AppHealth from './components/AppHealth';
 
 function App() {
 
