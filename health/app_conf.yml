@@ -1,7 +1,7 @@
 version: 1
 scheduler:
-  period_sec: 5
-  max_tries: 3
+  period_sec: 20
+  max_tries: 1
   sleep: 1
 datastore:
   filename: /data/data.sqlite
