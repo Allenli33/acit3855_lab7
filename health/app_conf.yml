@@ -7,5 +7,5 @@ datastore:
   filename: /data/data.sqlite
 receiver_url: http://allenliacit3855.eastus.cloudapp.azure.com/receiver
 storage_url: http://allenliacit3855.eastus.cloudapp.azure.com/storage
-processing_url: http://allenliacit3855.eastus.cloudapp.azure.comprocessing
+processing_url: http://allenliacit3855.eastus.cloudapp.azure.com/processing
 audit_url: http://allenliacit3855.eastus.cloudapp.azure.com/audit_log
