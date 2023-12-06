@@ -1,0 +1,51 @@
+---
+openapi: 3.0.0
+info:
+  description: This API provides health status check for each backend services
+  version: "1.0.0"
+  title: Health API
+  contact:
+    email: hli197@my.bcit.ca
+
+paths:
+  /health:
+    get:
+      summary: Gets the event health
+      operationId: app.get_health
+      description: Gets status of each of the Receiver, Storage, Processing and Audit services
+      responses:
+        "201":
+          description: Successfully returned a list of health check events
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/ReadingStats"
+        "404":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+components:
+  schemas:
+    ReadingHealth:
+      required:
+        - receiver
+        - storage
+        - processing
+        - audit
+      properties:
+        receiver:
+          type: string
+        storage:
+          type: string
+        processing:
+          type: string
+        audit:
+          type: string
+      type: object

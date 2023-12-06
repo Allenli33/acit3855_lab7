@@ -1,0 +1,11 @@
+version: 1
+scheduler:
+  period_sec: 5
+  max_tries: 3
+  sleep: 1
+datastore:
+  filename: /data/data.sqlite
+receiver_url: http://allenliacit3855.eastus.cloudapp.azure.com/receiver
+storage_url: http://allenliacit3855.eastus.cloudapp.azure.com/storage
+processing_url: http://allenliacit3855.eastus.cloudapp.azure.comprocessing
+audit_url: http://allenliacit3855.eastus.cloudapp.azure.com/audit_log
