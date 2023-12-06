@@ -21,7 +21,7 @@ paths:
               schema:
                 type: object
                 items:
-                  $ref: "#/components/schemas/ReadingStats"
+                  $ref: "#/components/schemas/ReadingHealth"
         "404":
           description: Invalid request
           content:
