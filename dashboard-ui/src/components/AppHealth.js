@@ -8,7 +8,7 @@ export default function AppHealths() {
     const [error, setError] = useState(null);
 
     const getHealths = () => {
-        fetch(`http://messager.eastus2.cloudapp.azure.com/health`)
+        fetch(`http://allenliacit3855.eastus.cloudapp.azure.com/health`)
             .then((res) => res.json())
             .then(
                 (result) => {
