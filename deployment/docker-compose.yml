@@ -145,6 +145,7 @@ services:
     volumes:
       - /home/azureuser/config/health:/config
       - /home/azureuser/logs:/logs
+      - health-db:/data
     depends_on:
       - "processing"
       - "audit_log"
@@ -154,6 +155,7 @@ services:
 volumes:
   my-db:
   processing-db:
+  health-db:
 
 networks:
   api.network:
