@@ -5,7 +5,7 @@ scheduler:
   sleep: 1
 datastore:
   filename: /data/data.sqlite
-receiver_url: http://allenliacit3855.eastus.cloudapp.azure.com/receiver
-storage_url: http://allenliacit3855.eastus.cloudapp.azure.com/storage
-processing_url: http://allenliacit3855.eastus.cloudapp.azure.com/processing
-audit_url: http://allenliacit3855.eastus.cloudapp.azure.com/audit_log
+receiver_url: http://ec2-44-230-165-6.us-west-2.compute.amazonaws.com/receiver
+storage_url: http://ec2-44-230-165-6.us-west-2.compute.amazonaws.com/storage
+processing_url: http://ec2-44-230-165-6.us-west-2.compute.amazonaws.com/processing
+audit_url: http://ec2-44-230-165-6.us-west-2.compute.amazonaws.com/audit_log

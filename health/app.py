@@ -15,24 +15,28 @@ from base import Base
 from flask_cors import CORS, cross_origin
 from connexion import NoContent
 
-# Environment setup
+# Check environment and set configuration file paths
 if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
     print("In Test Environment")
-    app_conf_file = "/config/app_conf.yml"
-    log_conf_file = "/config/log_conf.yml"
+    APP_CONF_FILE = "/config/app_conf.yml"
+    LOG_CONF_FILE = "/config/log_conf.yml"
 else:
     print("In Dev Environment")
-    app_conf_file = "app_conf.yml"
-    log_conf_file = "log_conf.yml"
+    APP_CONF_FILE = "app_conf.yml"
+    LOG_CONF_FILE = "log_conf.yml"
 
-with open(app_conf_file, 'r') as f:
+# Load application configuration
+with open(APP_CONF_FILE, 'r', encoding='utf-8') as f:
     app_config = yaml.safe_load(f.read())
-    
-with open(log_conf_file, 'r') as f:
+
+# External Logging Configuration
+with open(LOG_CONF_FILE, 'r', encoding='utf-8') as f:
     log_config = yaml.safe_load(f.read())
     logging.config.dictConfig(log_config)
 
 logger = logging.getLogger('basicLogger')
+logger.info("App Conf File: %s", APP_CONF_FILE)
+logger.info("Log Conf File: %s", LOG_CONF_FILE)
 
 # Database setup
 sqliteUrl = "sqlite:///%s" % app_config["datastore"]["filename"]

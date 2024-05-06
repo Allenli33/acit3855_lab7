@@ -2,11 +2,11 @@ version: 1
 datastore:
   user: dbuser
   password: Lh-729684251
-  hostname: allenliacit3855.eastus.cloudapp.azure.com
+  hostname: ec2-44-230-165-6.us-west-2.compute.amazonaws.com
   port: 3306
   db: events
 events:
-  hostname: allenliacit3855.eastus.cloudapp.azure.com
+  hostname: ec2-44-230-165-6.us-west-2.compute.amazonaws.com
   port: 9092
   topic: events
 kafka:

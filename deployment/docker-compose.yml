@@ -16,11 +16,11 @@ services:
       - "9092:9092"
     hostname: kafka
     environment:
-      KAFKA_CREATE_TOPICS: "events:2:1"
-      KAFKA_ADVERTISED_HOST_NAME: allenliacit3855.eastus.cloudapp.azure.com
+      KAFKA_CREATE_TOPICS: "events:2:2"
+      KAFKA_ADVERTISED_HOST_NAME: ec2-44-230-165-6.us-west-2.compute.amazonaws.com
       KAFKA_LISTENERS: INSIDE://:29092,OUTSIDE://:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
-      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:29092,OUTSIDE://allenliacit3855.eastus.cloudapp.azure.com:9092
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:29092,OUTSIDE://ec2-44-230-165-6.us-west-2.compute.amazonaws.com:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LOG_DIRS: /kafka/kafka-logs

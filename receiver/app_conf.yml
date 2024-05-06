@@ -4,7 +4,7 @@ eventstore1:
 eventstore2:
   url: http://localhost:8090/records/return
 events:
-  hostname: allenliacit3855.eastus.cloudapp.azure.com
+  hostname: ec2-44-230-165-6.us-west-2.compute.amazonaws.com
   port: 9092
   topic: events
 kafka:
